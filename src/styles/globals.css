@@ -1,0 +1,9 @@
+@import "antd/dist/reset.css";
+
+body {
+  background-color: aliceblue;
+}
+
+a {
+  text-decoration: none;
+}
