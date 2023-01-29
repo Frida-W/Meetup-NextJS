@@ -3,6 +3,10 @@ import { useState } from "react";
 import CountDown from "../CountDown";
 import { message } from "antd";
 import requestInstance from "service/fetch";
+// 使用useStore的组件，都用  observer 包裹一下，保证响应式
+import { observer } from 'mobx-react-lite';
+import { useStore } from 'store';
+import { GithubCallbackUrl } from 'utils/const';
 
 interface IProps {
   isShow: boolean;
@@ -10,6 +14,7 @@ interface IProps {
 }
 
 const Login = (props: IProps) => {
+  const store = useStore();
   const { isShow = false, onClose } = props;
   const [isShowVerifyCode, setIsShowVerifyCode] = useState(false);
   const [form, setForm] = useState({
@@ -52,21 +57,29 @@ const Login = (props: IProps) => {
         identity_type: "phone"
       }).then((res) => {
         if (res.code === 0) {
-          //......
-          onClose && onClose();
+              // 登陆成功
+              message.success(res.msg);
+              store.user.setUserInfo(res?.data);
+              setForm({
+                  phone: '',
+                  verify: '',
+              });
+              handleClose();
         } else {
           message.error(res?.msg || "unknown message");
         }
       })
   };
 
-  const handleOAuthGithub = () => {};
+  const handleOAuthGithub = () => {
+    window.location.href = GithubCallbackUrl;
+  };
   const handleCountDownEnd = () => {
     setIsShowVerifyCode(false);
   };
 
   const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, value } = e?.target;
     setForm({
       ...form,
       [name]: value,
@@ -126,4 +139,4 @@ const Login = (props: IProps) => {
   );
 };
 
-export default Login;
+export default observer(Login);
