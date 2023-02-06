@@ -5,7 +5,7 @@ import { withIronSessionApiRoute } from "iron-session/next";
 import { ironOptions } from "config/index";
 import { ISession } from "../../../pages/api/index";
 import { LOGOUT_FAIL } from "utils/err-code";
-import { setCookie } from "utils";
+import { setCookie } from "utils/cookie";
 
 async function logout(
   req: NextApiRequest,

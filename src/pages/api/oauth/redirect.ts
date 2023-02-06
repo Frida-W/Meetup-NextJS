@@ -4,7 +4,7 @@ import { withIronSessionApiRoute } from "iron-session/next";
 import { ironOptions } from "config/index";
 import { ISession } from "../../../pages/api/index";
 import { GITHUB_REGISTER_SAVE_FAIL } from "utils/err-code";
-import { setCookie } from "utils";
+import { setCookie } from "utils/cookie";
 import getDataSource from "db/index";
 import { User, UserAuth } from "db/entity";
 import {

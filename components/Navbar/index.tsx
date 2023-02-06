@@ -2,19 +2,20 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { navLinks } from "./config";
 import styles from "./index.module.scss";
-import { Button, Dropdown, Avatar, Menu, message } from "antd";
-import { LogoutOutlined, HomeOutlined, UserOutlined } from "@ant-design/icons";
+import { Button, Dropdown, Avatar, message } from "antd";
+import type { MenuProps } from "antd";
 import { useState } from "react";
 import { useStore } from "store";
 import Login from "components/Login";
 import requestInstance from "service/fetch";
 import { observer } from "mobx-react-lite";
 
-const Navbar= () => {
+const Navbar = () => {
   const store = useStore();
   const { userId, avatar, nickname } = store.user.userInfo;
-  const { pathname, push } = useRouter(); 
+  const { pathname, push } = useRouter();
   const [isShowLogin, setIsShowLogin] = useState(false);
+  
   const handleGotoEditorPage = () => {
     if (!userId) {
       message.warning("Please login first");
@@ -30,7 +31,7 @@ const Navbar= () => {
   };
   const handleLogout = async () => {
     const res = await requestInstance.post<null, BaseDataResponse<null>>(
-      "/api/user/logout" 
+      "/api/user/logout"
     );
     if (res.code === 0) {
       store.user.setUserInfo({});
@@ -43,21 +44,23 @@ const Navbar= () => {
     }
   };
   const handleProfile = () => {
-    push(`/user/${userId}`);
+    push(`/user/${userId}`); //前往用户个人主页
   };
-  const DropDownMenu = (
-    <Menu>
-      <Menu.Item key="item-1">
-        <UserOutlined></UserOutlined>&nbsp;{nickname}
-      </Menu.Item>
-      <Menu.Item key="item-2" onClick={handleProfile}>
-        <HomeOutlined></HomeOutlined>&nbsp;个人主页
-      </Menu.Item>
-      <Menu.Item key="item-3" onClick={handleLogout}>
-        <LogoutOutlined></LogoutOutlined>&nbsp;退出登录
-      </Menu.Item>
-    </Menu>
-  );
+
+  const items: MenuProps["items"] = [
+    {
+      key: "1",
+      label: <a target="_blank">{nickname}</a>,
+    },
+    {
+      key: "2",
+      label: <a onClick={handleProfile}>个人主页</a>,
+    },
+    {
+      key: "3",
+      label: <a onClick={handleLogout}>退出登录</a>,
+    },
+  ];
 
   return (
     <div className={styles.navbar}>
@@ -74,7 +77,7 @@ const Navbar= () => {
       <section className={styles.operationArea}>
         <Button onClick={handleGotoEditorPage}>New Post</Button>
         {userId ? (
-          <Dropdown overlay={DropDownMenu} placement="bottomLeft">
+          <Dropdown menu={{ items }} placement="bottomLeft">
             <Avatar src={avatar}></Avatar>
           </Dropdown>
         ) : (

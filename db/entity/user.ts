@@ -1,19 +1,20 @@
-import { Column, Entity, BaseEntity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, BaseEntity } from "typeorm";
+// import { CommonEntity } from './commonEntity';
 
-@Entity({ name: "users" }) //要和表名一致
+@Entity({ name: "users" }) // name 就是这个实体对应的表名
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
-  readonly id: number;
+  readonly id!: number;
 
-  @Column()
-  nickname: string;
+  @Column("varchar", { nullable: false })
+  nickname!: string;
 
-  @Column("text")
-  avatar: string;
+  @Column("varchar", { nullable: false })
+  avatar!: string;
 
-  @Column("text")
-  job: string;
+  @Column("varchar", { nullable: true })
+  job: string | undefined;
 
-  @Column("text")
-  introduce: string;
+  @Column("varchar", { nullable: true })
+  introduce: string | undefined;
 }

@@ -1,0 +1,84 @@
+.title {
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 32px;
+    color: #1d2129;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 8px;
+    margin-top: 10px;
+}
+.user {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 20px 0;
+    .info {
+        margin-left: 10px;
+        .name {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .date {
+            font-size: 12px;
+            color: #8a919f;
+            span {
+                color: #8a919f;
+            }
+        }
+    }
+}
+.detail {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+}
+.comment {
+    .commentTitle {
+        font-size: 18px;
+        line-height: 30px;
+        font-weight: 600;
+        color: #252933;
+    }
+    .enter{
+        display: flex;
+        align-items: center;
+        .content{
+            width: 100%;
+            margin-left: 20px;
+            button {
+                margin-top: 20px;
+            }
+        }
+    }
+    .display {
+        margin-top: 80px;
+        .wrapper{
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 50px;
+        }
+        .info{
+            display: flex;
+            flex-direction: column;
+            margin-left: 20px;
+            width: 100%;
+            .name{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-size: 15px;
+                font-weight: bold;
+                .date{
+                    font-weight: normal;
+                    color: #8a919f;
+                }
+            }
+        }
+        .content{
+            color: #515767;
+            margin-top: 10px;
+        }
+    }
+}

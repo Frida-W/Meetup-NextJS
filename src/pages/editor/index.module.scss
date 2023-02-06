@@ -1,0 +1,15 @@
+.container{
+    margin: 0 auto;
+}
+
+.operation{
+    display: flex;
+    // padding: 10px 10px;
+    .title{
+        width: 90%;
+    }
+    .button{
+        width: 10%;
+    }
+}
+

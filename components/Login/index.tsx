@@ -1,5 +1,5 @@
 import styles from "./index.module.scss";
-import { useState } from "react";
+import { ChangeEvent,useState } from "react";
 import CountDown from "../CountDown";
 import { message } from "antd";
 import requestInstance from "service/fetch";
@@ -15,6 +15,7 @@ interface IProps {
 
 const Login = (props: IProps) => {
   const store = useStore();
+
   const { isShow = false, onClose } = props;
   const [isShowVerifyCode, setIsShowVerifyCode] = useState(false);
   const [form, setForm] = useState({
@@ -27,13 +28,12 @@ const Login = (props: IProps) => {
   };
 
   const handleGetVerifyCode = () => {
-    // setIsShowVerifyCode(true);
     if (!form?.phone) {
       message.warning("Please enter your phone number");
       return;
     }
     requestInstance
-      .post("/api/user/sendVerifyCode", {
+      .post<{ to: string; templateId: number }, BaseDataResponse<string>>("/api/user/sendVerifyCode", {
         to: form?.phone,
         templateId: 1,
       })
@@ -52,7 +52,7 @@ const Login = (props: IProps) => {
       return;
     }
     requestInstance
-      .post("/api/uer/login", {
+      .post<{ phone: string; verifyCode: string }, BaseDataResponse<any>>("/api/user/login", {
         ...form,
         identity_type: "phone"
       }).then((res) => {
@@ -74,6 +74,7 @@ const Login = (props: IProps) => {
   const handleOAuthGithub = () => {
     window.location.href = GithubCallbackUrl;
   };
+
   const handleCountDownEnd = () => {
     setIsShowVerifyCode(false);
   };
@@ -140,3 +141,4 @@ const Login = (props: IProps) => {
 };
 
 export default observer(Login);
+// 使用useStore的组件，都用  observer 包裹一下，保证响应式

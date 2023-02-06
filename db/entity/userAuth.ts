@@ -1,30 +1,31 @@
 import {
   Column,
   Entity,
-  BaseEntity,
-  PrimaryGeneratedColumn,
   ManyToOne,
-  JoinColumn
+  JoinColumn,
+  BaseEntity,
+  PrimaryGeneratedColumn
 } from "typeorm";
-import {User} from "./user"
+// import { CommonEntity } from "./commonEntity";
+import { User } from "./user";
 
 @Entity({ name: "user_auth" }) //要和表名一致
 export class UserAuth extends BaseEntity {
   @PrimaryGeneratedColumn()
-  readonly id: number;
+  readonly id!: number;
 
-  @Column()
-  identity_type: string;
+  @Column("varchar", { name: "identity_type" })
+  identity_type: string | undefined;
 
-  @Column("text")
-  identifier: string;
+  @Column("varchar")
+  identifier: string | undefined; // 不写类型| undefined会报错
 
-  @Column("text")
-  credential: string;
+  @Column("varchar")
+  credential: string | undefined;
 
-  @ManyToOne(() => User,{
-    cascade: true
+  @ManyToOne(() => User, {
+    cascade: true,
   })
-  @JoinColumn({name:"user_id"})
-  user: User
+  @JoinColumn({ name: "user_id" })
+  user: User | undefined;  // 根据 user_id查到的user对象，名称就是 user
 }

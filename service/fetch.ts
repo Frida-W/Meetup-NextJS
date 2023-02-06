@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { message } from 'antd';
 const requestInstance = axios.create({
   baseURL: "/",
 });
@@ -14,11 +14,12 @@ requestInstance.interceptors.response.use(
     if (response?.status === 200) {
       return response?.data;
     } else {
-      return {
-        code: -1,
-        msg: "unknown error",
-        data: null,
-      };
+      // return {
+      //   code: -1,
+      //   msg: "unknown error",
+      //   data: null,
+      // };
+      message.error(response.data);
     }
   },
   (error) => Promise.reject(error)

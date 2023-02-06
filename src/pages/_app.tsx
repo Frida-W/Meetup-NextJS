@@ -1,8 +1,8 @@
 import "@/styles/globals.css";
-// import type { AppProps } from "next/app";
 import Layout from "components/Layout";
 import { StoreProvider } from "store/index";
 import { NextPage } from "next";
+import request from "service/fetch";
 
 interface IProps {
   initialValue: Record<any, any>; // key-value类型
@@ -11,24 +11,36 @@ interface IProps {
 }
 
 export default function MyApp({ initialValue, Component, pageProps }: IProps) {
+  //component的layout属性为null，则该页面不需要Layout包裹渲染
+  const renderLayout = () => {
+    if ((Component as any).layout === null) {
+      return <Component {...pageProps} />;   //固定写法
+    } else {
+      return (
+        <Layout>  
+          <Component {...pageProps} /> 
+        </Layout>
+      );
+    }
+  };
   return (
+    //provider拿到initial value后去store/index中调用createStore方法
     <StoreProvider initialValue={initialValue}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      {renderLayout()}
     </StoreProvider>
   );
 }
 
 //使用getInitialProps类属性, 因为用ssr渲染，所以可以接受一个ctx，使用ctx.req.cookies中可以拿到cookie
 MyApp.getInitialProps = async ({ ctx }: { ctx: any }) => {
-  //any是省事的做法，最完美的做法是把每个类型都定义好
-  const { id, nickname, avatar } = ctx?.req.cookies || {}; // 或是空对象，以免拿不到cookies而报错
+  // console.log(ctx?.req?.cookies) 可以打印出浏览器中cookies里存储的所有内容，注意这里要用cookies
+  const { userId, nickname, avatar } = ctx?.req?.cookies || {};
+
   return {
     initialValue: {
       user: {
         userInfo: {
-          id,
+          userId,
           nickname,
           avatar,
         },
